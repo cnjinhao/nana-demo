@@ -3,14 +3,15 @@
 #include <nana/filesystem/filesystem.hpp>
 #include <nana/filesystem/filesystem_ext.hpp>
 
-
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
 
 int main()
 {
 	using namespace nana;
-	using namespace nana::experimental;
-	using SubDirectories = filesystem::directory_iterator;
-	using namespace nana::experimental::filesystem::ext;
+	using SubDirectories = nana::filesystem_ext::directory_only_iterator;
+	using namespace nana::filesystem_ext;
 
 
 	form fm{ API::make_center(400, 500), appear::decorate<appear::taskbar>() };
@@ -22,7 +23,7 @@ int main()
 
 	for (const auto& dir : SubDirectories{ def_rootstr })
 	{
-		if (!filesystem::is_directory(dir)) continue;
+		if (!filesystem_ext::is_directory(dir)) continue;
 		tree.insert(node, dir.path().filename().generic_u8string(),
 			dir.path().filename().generic_u8string());
 		break;
@@ -41,7 +42,7 @@ int main()
 		//Walk in the path directory for sub directories.
 		for (const auto& dir : SubDirectories{ Path })
 		{
-			if (!filesystem::is_directory(dir)) continue; //If it is not a directory.
+			if (!filesystem_ext::is_directory(dir)) continue; //If it is not a directory.
 
 			auto child = tree.insert(arg.item, dir.path().filename().generic_u8string(),
 				dir.path().filename().generic_u8string());
@@ -53,7 +54,7 @@ int main()
 			//front of the node.
 			for (const auto& dr : SubDirectories{  dir.path() })
 			{
-				if (!filesystem::is_directory(dr)) continue; //If it is not a directory.
+				if (!filesystem_ext::is_directory(dr)) continue; //If it is not a directory.
 				tree.insert(child, dr.path().filename().generic_u8string(),
 					dr.path().filename().generic_u8string());
 				break;

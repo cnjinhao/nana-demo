@@ -4,6 +4,10 @@
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/place.hpp>
 
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
 int main()
 {
     using namespace nana;

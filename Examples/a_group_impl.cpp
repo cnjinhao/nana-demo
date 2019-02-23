@@ -87,6 +87,10 @@ namespace dm
 
 }
 
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
 int main()
 {
 

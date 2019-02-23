@@ -8,6 +8,10 @@
 //#include <nana/gui/widgets/group.hpp>
 //#include <nana/gui/widgets/label.hpp>
 
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
 int main()
 {
 	using namespace nana;

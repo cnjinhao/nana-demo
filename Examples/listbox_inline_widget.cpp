@@ -71,6 +71,11 @@ private:
 		pos_ = pos;
 	}
 
+	/// A message to change the status
+	void notify_status(status_type status, bool selected) override
+	{
+	}
+
 	//Sets the inline widget size
 	//dimension represents the max size can be set
 	//The coordinate of inline widget is a logical coordinate to the sub item of listbox
@@ -99,6 +104,10 @@ private:
 	}
 private:
 };
+
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
 
 int main()
 {

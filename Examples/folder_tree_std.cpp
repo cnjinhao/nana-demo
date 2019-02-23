@@ -1,12 +1,15 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/treebox.hpp>
-#include <nana/filesystem/filesystem_selector.hpp>
 #include <nana/filesystem/filesystem_ext.hpp>
+
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
 
 int main()
 {
 	using namespace nana;
-	using namespace nana::experimental::filesystem::ext;
+	using namespace nana::filesystem_ext;
 	using namespace std::experimental;
 	using SubDirectories = filesystem::directory_iterator;
 

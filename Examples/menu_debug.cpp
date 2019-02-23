@@ -2,6 +2,10 @@
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
 int main(int argc, char **argv)
 {
     nana::form fm;

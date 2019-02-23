@@ -1,6 +1,11 @@
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/combox.hpp>
 #include <iostream> 
+
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
 int main()
 {
 	using namespace nana;	   //No Minimize button, no maximize button and sizable frame.

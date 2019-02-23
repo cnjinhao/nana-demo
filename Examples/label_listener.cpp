@@ -13,6 +13,10 @@ void listener(label::command cmd, const std::string& s)
     }
 }
 
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
 int main()
 {
     form fm;

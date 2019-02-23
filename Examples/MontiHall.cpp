@@ -20,6 +20,10 @@ class monty_hall
     nana::button door_[3]; 
  }; 
 
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
  int main() 
  { 
     monty_hall mh; 
@@ -32,7 +36,7 @@ monty_hall::monty_hall()
  { 
   this->caption( ("The Monty Hall Problem")); 
   std::string text =  "Hi, I am the host, you are on a Game Show:\n"
-                      "You are given the choice of one of tree Doors.\n"
+                      "You are given the choice of one of three Doors.\n"
                       "One door has a new Car behind it and the other two: Goats.\n"
                       "Now pick a door to win the Car."; 
 
@@ -71,7 +75,7 @@ void monty_hall::_m_play(int door)
                 break; 
       case state_picked: 
                      label_.caption(door_has_car_ == door ? 
-                                        ("Yes, you win the new Car!!") :  ("Sign, you are lost!")); 
+                                        ("Yes, you win the new Car!!") :  ("Sigh... you lose!")); 
                      state_ = state_over; 
                 break; 
       } 
@@ -91,7 +95,7 @@ void monty_hall::_m_remove_door(int exclude)
      door_[doors[ts]].enabled(false); 
      doors.erase(doors.begin() + ts); 
      std::string text =  "I know what's behind all the doors and" 
-                         "I remove a door which a goat behind it. \n"
+                         "I remove a door which hides a goat behind it. \n"
                          "And now, do you want to stick with your decision"
                          " of Door No.X or do you want to change your choice"
                          " to Door No.Y?"; 

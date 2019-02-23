@@ -10,6 +10,10 @@
 #include <nana/audio/player.hpp>
 #include <nana/threads/pool.hpp>
 
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
 int main()
 {
 #ifdef NANA_ENABLE_AUDIO

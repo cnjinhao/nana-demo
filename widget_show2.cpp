@@ -23,8 +23,8 @@
 #include <nana/gui/tooltip.hpp>
 #include <memory>
 #include <vector>
+#include <map>
 
-#include <nana/filesystem/filesystem_selector.hpp>
 #include <nana/filesystem/filesystem_ext.hpp>
 
 
@@ -32,7 +32,7 @@ namespace demo
 {
 	using namespace nana;
 	namespace filesystem = std::experimental::filesystem;
-	using namespace nana::experimental::filesystem::ext;
+	using namespace nana::filesystem_ext;
 
 	class tab_page_listbox 	: public panel<false>
 	{
@@ -390,6 +390,10 @@ namespace demo
 		exec();
 	}
 }
+
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
 
 int main()
 {

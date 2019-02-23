@@ -7,6 +7,11 @@ void when_exit(const nana::arg_unload& ei)
     m<<"Are you sure you want to exit the game?";
     ei.cancel = (m() != m.pick_yes);
 }
+
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
 int main()
 {
     using namespace nana;
