@@ -1,6 +1,6 @@
 // http://nanapro.codeplex.com/discussions/544169
 
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/widgets/button.hpp>
 
 int main()
@@ -29,6 +29,13 @@ int main()
     btn.set_bground(bground);
 
     fm.show();
-    exec();
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1, 1, [&btn]() {click(btn); }
+#endif
+
+	);
 }
 

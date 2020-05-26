@@ -1,4 +1,4 @@
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/dragger.hpp>
 
@@ -15,5 +15,12 @@ int main()
     dg.target(btn);   //move the btn
 
     fm.show();
-    exec();
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1, 1, [&btn]() {click(btn); }
+#endif
+
+	);
 }

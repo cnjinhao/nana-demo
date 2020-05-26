@@ -5,7 +5,7 @@
 // http://download.wavetlan.com/SVV/Media/HTTP/WAV/NeroSoundTrax/NeroSoundTrax_test3_PCM_Mono_CBR_8SS_8000Hz.wav
 
 
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/audio/player.hpp>
 #include <nana/threads/pool.hpp>
@@ -25,7 +25,6 @@ int main()
     btn     .caption("Play the audio");
     btn_wait.caption("Play and wait 5 min !!!!");
 
-    //C++11
     btn.events().click(pool_push(pool, [&]()
                            {
                                player.play();
@@ -37,6 +36,18 @@ int main()
 
     fm.show();
 
-    exec();
+    exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1,
+		5,    // it will wait for the entery sound to finish !! be aweare
+		[&btn]()
+	{
+		click(btn);
+	}
+#endif
+
+	);
 #endif	//NANA_ENABLE_AUDIO
 }

@@ -1,4 +1,4 @@
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/widgets/listbox.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/textbox.hpp>
@@ -69,6 +69,23 @@ private:
 	{
 		indicator_ = &ind;
 		pos_ = pos;
+	}
+
+	//Notify the item status
+	//This method is introduced since 1.4.1
+	void notify_status(status_type status, bool status_on) /*override*/ 
+	{
+		switch(status)
+		{
+		case status_type::selecting:
+			//If status_on is true, the item is selecting.
+			//If status on is false, the item is unselecting
+			break;
+		case status_type::checking:
+			//If status_on is true, the item is checking
+			//If status_on is false, the item is unchecking
+			break;
+		}
 	}
 
 	//Sets the inline widget size

@@ -4,7 +4,12 @@
  *	The demo requires Nana 1.0 and C++11 compiler
  *	Screenshot at http://sourceforge.net/projects/stdex
  */
-#include <nana/gui/wvl.hpp>
+#include <memory>
+#include <vector>
+#include <map>
+
+#include <nana/deploy.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/combox.hpp>
@@ -21,18 +26,14 @@
 #include <nana/gui/widgets/group.hpp>
 #include <nana/gui/timer.hpp>
 #include <nana/gui/tooltip.hpp>
-#include <memory>
-#include <vector>
-
-#include <nana/filesystem/filesystem_selector.hpp>
 #include <nana/filesystem/filesystem_ext.hpp>
 
 
 namespace demo
 {
 	using namespace nana;
-	namespace filesystem = std::experimental::filesystem;
-	using namespace nana::experimental::filesystem::ext;
+	namespace fs = std::filesystem;
+	namespace fs_ext = nana::filesystem_ext;
 
 	class tab_page_listbox 	: public panel<false>
 	{
@@ -86,16 +87,21 @@ namespace demo
 			place_.div("<tree>");
 			place_["tree"]<<treebox_;
 
-			item_proxy root_node = treebox_.insert(def_root, def_rootname);
+			item_proxy root_node = treebox_.insert(fs_ext::def_root, fs_ext::def_rootname);
 
 			// find first directory --> use std::find ?
-			for (const auto& dir : filesystem::directory_iterator{ def_rootstr })
+			// Boost can throw an exception "Access is denied"
+			// when accessing some system paths, like "C:\Config.Msi"
+		try {
+		      for (const auto& dir : fs::directory_iterator{ fs_ext::def_rootstr })
+
 			{
-				if (!filesystem::is_directory(dir)) continue;
-				std::string fname = dir.path().filename().generic_u8string();
+				if (!fs::is_directory(dir)) continue;
+				std::string fname = dir.path().filename().generic_string();
 				treebox_.insert(root_node, fname, fname);
 				break;
 			}
+		} catch (...) {}
 
             treebox_.events().expanded([this](const arg_treebox& a){_m_expand(a.widget, a.item, a.operated);});
 		}
@@ -114,26 +120,30 @@ namespace demo
 			treebox_.auto_draw(false);
 
 			//Walk in the path directory for sub directories.
-			for (const auto& dir : filesystem::directory_iterator{ path })
+		try {		
+			for (const auto& dir : fs::directory_iterator{ path })
 			{
-				if (!filesystem::is_directory(dir)) continue;
-				std::string fname = dir.path().filename().generic_u8string();
+				if (!fs::is_directory(dir)) continue;
+				std::string fname = dir.path().filename().generic_string();
 				auto child = treebox_.insert(node, fname, fname);
 				if (child.empty()) continue;
 
+				try {
 				//Find a directory in child directory, if there is a directory,
 				//insert it into the child, just insert one node to indicate the
 				//node has a child and an arrow symbol will be displayed in the
 				//front of the node.   use std::find_first ??
-				for (const auto& sdir : filesystem::directory_iterator{ dir.path() })
+				for (const auto& sdir : fs::directory_iterator{ dir.path() })
 				{
-					if (!filesystem::is_directory(sdir)) continue; //If it is not a directory.
+					if (!fs::is_directory(sdir)) continue; //If it is not a directory.
 					
-					std::string fname = sdir.path().filename().generic_u8string();
+					std::string fname = sdir.path().filename().generic_string();
 					treebox_.insert(child, fname, fname);
 					break;
 				}
+				} catch (...) {}
 			}
+			} catch (...) {}
 			treebox_.auto_draw(true);
 		}
 	};
@@ -258,7 +268,8 @@ namespace demo
 		widget_show()
 			: form(API::make_center(500, 600), appear::decorate<appear::sizable>())
 		{
-			this->caption(("This is a demo of Nana C++ Library"));
+            nana::API::track_window_size(*this, {300,300}, false); //minimum
+		    this->caption(("This is a demo of Nana C++ Library"));
 			place_.div( R"(vertical
                                    <weight=30% min=260 <weight=10> <simples gap=3 margin=5> >
                                    <weight=20 tab >
@@ -364,7 +375,7 @@ namespace demo
 				progr_u.inc();
 			});
 
-			timer_.interval(80);
+			timer_.interval(std::chrono::milliseconds{80});
 			timer_.start();
 		}
 

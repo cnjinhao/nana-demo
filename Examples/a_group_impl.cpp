@@ -1,5 +1,5 @@
 
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/panel.hpp>
@@ -68,8 +68,8 @@ namespace dm
             plc["titel"] << titel;
 
             color obg = owner.bgcolor();
-            titel.bgcolor(obg.blend(colors::black, 0.975) );
-            color bg=obg.blend(colors::black, 0.950 );
+            titel.bgcolor(obg.blend(colors::black, 0.025) );
+            color bg=obg.blend(colors::black, 0.050 );
             bgcolor(bg);
 
             drawing dw(*this);
@@ -126,6 +126,16 @@ int main()
 
 	fm.show();
 
-	::nana::exec();
+	::nana::exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+		1, 1, [&b1, &b2]()
+	{
+		click(b1);
+		click(b2);
+	}
+#endif
+
+	);
 }
 /// 

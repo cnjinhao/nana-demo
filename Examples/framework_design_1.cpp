@@ -1,4 +1,4 @@
-#include <nana/gui/wvl.hpp> 
+#include <nana/gui.hpp> 
 #include <nana/gui/widgets/button.hpp> 
 #include <nana/gui/place.hpp> 
 #include <iostream> 
@@ -89,5 +89,5 @@ int main()
     framework fw; 
     fw.set(&bar); 
     fw.work(); 
-    nana::exec(); 
+    nana::exec();
 } 

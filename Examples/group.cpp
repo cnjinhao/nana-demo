@@ -1,9 +1,10 @@
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/widgets/group.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/label.hpp>
+#include <iostream>
 
 using namespace nana;
 
@@ -45,6 +46,7 @@ int main()
 
 		grp_left["buttons"] << *btns.back();
 		grp_left.collocate();
+		std::cout << "button added\n";
 	});
     button b2  {grp_right,  "button2"};
     button b3  {grp_right,  "button3"};
@@ -68,5 +70,20 @@ int main()
 
 	fm.show();
 
-	::nana::exec();
+	::nana::exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1, 1, [&b1, &out, &grp_right]()
+	{
+		click(b1);
+		click(b1);
+		click(b1);
+		click(out);
+		click(grp_right);
+
+	}
+#endif
+
+	);
 }

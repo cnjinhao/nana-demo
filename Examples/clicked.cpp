@@ -1,7 +1,7 @@
-#include <nana/gui/wvl.hpp>
-#include <nana/gui/widgets/button.hpp>
+#include <iostream>
 
-#include <iostream> 
+#include <nana/gui.hpp>
+#include <nana/gui/widgets/button.hpp>
 
 void clicked(const nana::arg_click & eventinfo)
 {
@@ -10,9 +10,19 @@ void clicked(const nana::arg_click & eventinfo)
 
 int main()
 {
-    using namespace nana;
-    form fm;
+    nana::form fm;
+    fm.caption("Click this nana windows");
     fm.events().click(clicked);
     fm.show();
-    exec();
+    nana::exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+       1, 1, [&fm]() {  std::cout << "3 times automatic click. \n";
+                        nana::click(fm); nana::click(fm); nana::click(fm);
+                     }
+
+#endif
+
+	);
 }

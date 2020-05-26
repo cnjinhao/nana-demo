@@ -1,4 +1,4 @@
-#include <nana/gui/wvl.hpp>
+#include <nana/gui.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/menu.hpp>
 #include <iostream> 
@@ -32,5 +32,12 @@ int main()
 	btn.events().mouse_down( menu_popuper( mobj, btn, nana::point(100, 36),   mouse::any_button ));
 
 	fm.show();
-	exec();
+	exec(
+
+#ifdef NANA_AUTOMATIC_GUI_TESTING
+
+		1, 2, [&btn]() {click(btn); }
+#endif
+
+	);
 }
